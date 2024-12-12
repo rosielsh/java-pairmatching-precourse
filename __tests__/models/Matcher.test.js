@@ -43,20 +43,14 @@ describe("Matcher 클래스 테스트", () => {
     const checkMatchInfo = ["프론트엔드", "레벨1"];
 
     const matcher = new Matcher(matchStrategy);
-    const matchResult = new Map();
     const matchResultArr = [
       ["보노", "시저"],
       ["쉐리", "신디"],
     ];
 
-    for (let res of matchResultArr) {
-      matchResult.set(res[0], [res[1]]);
-      matchResult.set(res[1], [res[0]]);
-    }
-
     const history = new MatchHistory();
     const matchInfo = ["프론트엔드", "레벨1", "자동차경주"];
-    history.addHistory(matchInfo, matchResult);
+    history.addHistory(matchInfo, matchResultArr);
 
     expect(() => matcher.match(checkMatchInfo, crews, history)).toThrow("[ERROR]");
   });

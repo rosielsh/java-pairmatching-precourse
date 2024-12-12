@@ -10,15 +10,40 @@ class MatchHistory {
   }
 
   // 현재 matchInfo에 match 결과 저장
-  addHistory(matchInfo, matchResult) {
+  addHistory(matchInfo, matchResultArr) {
     const [course, level, mission] = matchInfo;
     const resultFindByKey = this.#getByKey(course, level);
+
+    console.log(resultFindByKey);
 
     if (resultFindByKey.get(mission) !== null) {
       generateError("이미 매칭 결과가 등록되어 있습니다.");
     }
 
+    const matchResult = new Map();
+
+    for (let res of matchResultArr) {
+      // 만약 매칭 정보가 1:1
+      if (res.length === 2) {
+        matchResult.set(res[0], [res[1]]);
+        matchResult.set(res[1], [res[0]]);
+      }
+      // 매칭이 1:1:1
+      else {
+        matchResult.set(res[0], [res[1], res[2]]);
+        matchResult.set(res[1], [res[0], res[2]]);
+        matchResult.set(res[2], [res[0], res[1]]);
+      }
+    }
+
     resultFindByKey.set(mission, matchResult);
+  }
+
+  resetCurrentResult(matchInfo) {
+    const [course, level, mission] = matchInfo;
+    const resultFindByKey = this.#getByKey(course, level);
+
+    resultFindByKey.set(mission, null);
   }
 
   isExistMatchInfo(course, level, mission) {
@@ -31,6 +56,10 @@ class MatchHistory {
   getMatchHistory(course, level, mission) {
     const matchResult = [];
     const resultFindByMission = this.#getByKey(course, level).get(mission);
+
+    if (resultFindByMission === null) {
+      return null;
+    }
 
     const set = new Set();
 
@@ -75,6 +104,10 @@ class MatchHistory {
     }
 
     return false;
+  }
+
+  initializeMap() {
+    this.#matchHistory = this.#setMap();
   }
 
   #setMap() {
