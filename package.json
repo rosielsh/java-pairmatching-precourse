@@ -1,7 +1,7 @@
 {
-  "name": "javascript-christmas-6",
+  "name": "javascript-pairmatching-precourse",
   "version": "1.0.0",
-  "description": "우아한테크코스 프리코스 크리스마스 프로모션 미션",
+  "description": "우아한테크코스 프리코스 페어매칭관리 미션",
   "type": "module",
   "dependencies": {
     "@woowacourse/mission-utils": "2.1.1"
