@@ -1,3 +1,5 @@
+import OrderValidator from "../../src/validators/OrderValidator.js";
+
 describe("OrderValidator 클래스 테스트", () => {
   test("각 과정, 레벨, 미션은 출력된 내용 이외의 것을 입력하면 에러가 발생한다", () => {
     const inputs = [
