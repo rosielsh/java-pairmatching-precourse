@@ -22,11 +22,31 @@ class MatchHistory {
   }
 
   isExistMatchInfo(course, level, mission) {
-    const resultFindByKey = this.#getByKey(course, level);
-    const resultFindByMission = resultFindByKey.get(mission);
+    const resultFindByMission = this.#getByKey(course, level).get(mission);
 
     if (resultFindByMission === null) return false;
     return true;
+  }
+
+  getMatchHistory(course, level, mission) {
+    const matchResult = [];
+    const resultFindByMission = this.#getByKey(course, level).get(mission);
+
+    const set = new Set();
+
+    for (let [key, value] of resultFindByMission) {
+      if (set.has(key)) continue;
+
+      set.add(key);
+
+      for (let pair of value) {
+        set.add(pair);
+      }
+
+      matchResult.push([key, ...value]);
+    }
+
+    return matchResult;
   }
 
   #setMap() {
