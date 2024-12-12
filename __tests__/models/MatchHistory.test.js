@@ -45,4 +45,16 @@ describe("MatchHistory 클래스 테스트", () => {
 
     expect(history.getMatchHistory(...matchInfo)).toStrictEqual(expectedResult);
   });
+
+  test("해당 크루가 이전에 같은 레벨에서 페어였던 적이 있는지 확인할 수 있다", () => {
+    const matchInfo = ["프론트엔드", "레벨1", "자동차경주"];
+    const checkMatchInfo = ["프론트엔드", "레벨1"];
+    const crews = ["이브", "월터"];
+    const history = new MatchHistory();
+
+    expect(history.isPairInSameLevel(checkMatchInfo, crews)).toEqual(false);
+
+    history.addHistory(matchInfo, matchResult);
+    expect(history.isPairInSameLevel(checkMatchInfo, crews)).toEqual(true);
+  });
 });
