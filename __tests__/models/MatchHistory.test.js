@@ -1,3 +1,5 @@
+import MatchHistory from "../../src/models/MatchHistory.js";
+
 describe("MatchHistory 클래스 테스트", () => {
   const matchResult = new Map();
 
