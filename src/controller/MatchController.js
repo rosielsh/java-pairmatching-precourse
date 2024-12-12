@@ -49,26 +49,21 @@ class MatchController {
             if (answer === "네") {
               history.resetCurrentResult(matchInfo);
 
-              if (matchInfo[0] === "프론트엔드") {
-                matchResult = matcher.match([matchInfo[0], matchInfo[1]], frontendCrews, history);
-                isMatched = true;
-                continue;
-              }
-
-              matchResult = matcher.match([matchInfo[0], matchInfo[1]], backendCrews, history);
+              matchResult = matcher.match(
+                [matchInfo[0], matchInfo[1]],
+                matchInfo[0] === "프론트엔드" ? frontendCrews : backendCrews,
+                history
+              );
               isMatched = true;
               continue;
             }
           }
 
-          if (matchInfo[0] === "프론트엔드") {
-            matchResult = matcher.match([matchInfo[0], matchInfo[1]], frontendCrews, history);
-            isMatched = true;
-            continue;
-          }
-
-          matchResult = matcher.match([matchInfo[0], matchInfo[1]], backendCrews, history);
-          isMatched = true;
+          matchResult = matcher.match(
+            [matchInfo[0], matchInfo[1]],
+            matchInfo[0] === "프론트엔드" ? frontendCrews : backendCrews,
+            history
+          );
         }
 
         history.addHistory(matchInfo, matchResult);
