@@ -14,8 +14,6 @@ class MatchHistory {
     const [course, level, mission] = matchInfo;
     const resultFindByKey = this.#getByKey(course, level);
 
-    console.log(resultFindByKey);
-
     if (resultFindByKey.get(mission) !== null) {
       generateError("이미 매칭 결과가 등록되어 있습니다.");
     }

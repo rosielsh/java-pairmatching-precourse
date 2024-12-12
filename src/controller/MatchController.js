@@ -51,6 +51,7 @@ class MatchController {
 
               if (matchInfo[0] === "프론트엔드") {
                 matchResult = matcher.match([matchInfo[0], matchInfo[1]], frontendCrews, history);
+                isMatched = true;
                 continue;
               }
 
@@ -70,9 +71,8 @@ class MatchController {
           isMatched = true;
         }
 
-        console.log("match 결과", matchResult);
         history.addHistory(matchInfo, matchResult);
-
+        this.#outputView.printMatchResult(matchResult);
         continue;
       }
 
