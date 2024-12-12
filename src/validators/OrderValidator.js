@@ -1,6 +1,6 @@
 import { COURSE } from "../constants/Course.js";
-import { LEVEL } from "../constants/Level";
-import { MISSION } from "../constants/Mission";
+import { LEVEL } from "../constants/Level.js";
+import { MISSION } from "../constants/Mission.js";
 import { generateError } from "../utils/generateError.js";
 
 class OrderValidator {
