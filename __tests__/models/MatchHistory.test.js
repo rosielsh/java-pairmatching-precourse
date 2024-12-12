@@ -31,4 +31,18 @@ describe("MatchHistory 클래스 테스트", () => {
 
     expect(history.isExistMatchInfo(...matchInfo)).toEqual(true);
   });
+
+  test("조회한 매칭 정보를 반환할 수 있다", () => {
+    const history = new MatchHistory();
+
+    const expectedResult = [
+      ["이브", "월터"],
+      ["보노", "제키"],
+      ["신디", "로드", "니콜"],
+    ];
+    const matchInfo = ["프론트엔드", "레벨1", "자동차경주"];
+    history.addHistory(matchInfo, matchResult);
+
+    expect(history.getMatchHistory(...matchInfo)).toStrictEqual(expectedResult);
+  });
 });
