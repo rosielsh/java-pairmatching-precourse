@@ -30,7 +30,6 @@ class Matcher {
         }
       }
 
-      console.log(isExistSameLevel, matchedCrews);
       if (!isExistSameLevel) return matchedCrews;
 
       retryCount++;
