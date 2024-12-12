@@ -9,7 +9,6 @@ class MatchHistory {
     this.#matchHistory = this.#setMap();
   }
 
-  // 현재 matchInfo에 match 결과 저장
   addHistory(matchInfo, matchResultArr) {
     const [course, level, mission] = matchInfo;
     const resultFindByKey = this.#getByKey(course, level);
@@ -18,47 +17,63 @@ class MatchHistory {
       generateError("이미 매칭 결과가 등록되어 있습니다.");
     }
 
-    const matchResult = new Map();
-
-    for (let res of matchResultArr) {
-      // 만약 매칭 정보가 1:1
-      if (res.length === 2) {
-        matchResult.set(res[0], [res[1]]);
-        matchResult.set(res[1], [res[0]]);
-      }
-      // 매칭이 1:1:1
-      else {
-        matchResult.set(res[0], [res[1], res[2]]);
-        matchResult.set(res[1], [res[0], res[2]]);
-        matchResult.set(res[2], [res[0], res[1]]);
-      }
-    }
-
+    const matchResult = this.#getMatchResult(matchResultArr);
     resultFindByKey.set(mission, matchResult);
   }
 
   resetCurrentResult(matchInfo) {
     const [course, level, mission] = matchInfo;
-    const resultFindByKey = this.#getByKey(course, level);
-
-    resultFindByKey.set(mission, null);
+    this.#getByKey(course, level).set(mission, null);
   }
 
   isExistMatchInfo(course, level, mission) {
-    const resultFindByMission = this.#getByKey(course, level).get(mission);
-
-    if (resultFindByMission === null) return false;
-    return true;
+    return this.#getByKey(course, level).get(mission) !== null;
   }
 
   getMatchHistory(course, level, mission) {
-    const matchResult = [];
     const resultFindByMission = this.#getByKey(course, level).get(mission);
 
     if (resultFindByMission === null) {
       return null;
     }
 
+    return this.#getMatchResultArr(resultFindByMission);
+  }
+
+  isPairInSameLevel(matchInfo, crews) {
+    const resultFindByKey = this.#getByKey(matchInfo[0], matchInfo[1]);
+
+    for (let [_, pairInfo] of resultFindByKey) {
+      if (pairInfo === null) continue;
+
+      // 1:1 페어
+      if (crews.length === 2) {
+        if (pairInfo.has(crews[0])) {
+          const pairs = pairInfo.get(crews[0]);
+
+          if (pairs.includes(crews[1])) return true;
+        }
+
+        continue;
+      }
+
+      // 1:1:1 페어
+      if (pairInfo.has(crews[0])) {
+        const pairs = pairInfo.get(crews[0]);
+
+        if (pairs.includes(crews[1]) || pairs.includes(crews[2])) return true;
+      }
+    }
+
+    return false;
+  }
+
+  initializeMap() {
+    this.#matchHistory = this.#setMap();
+  }
+
+  #getMatchResultArr(resultFindByMission) {
+    const matchResult = [];
     const set = new Set();
 
     for (let [key, value] of resultFindByMission) {
@@ -76,36 +91,21 @@ class MatchHistory {
     return matchResult;
   }
 
-  isPairInSameLevel(matchInfo, crews) {
-    const resultFindByKey = this.#getByKey(matchInfo[0], matchInfo[1]);
+  #getMatchResult(matchResultArr) {
+    const matchResult = new Map();
 
-    for (let [_, pairInfo] of resultFindByKey) {
-      if (pairInfo === null) continue;
-
-      // 1:1 페어
-      if (crews.length === 2) {
-        if (pairInfo.has(crews[0])) {
-          const pairs = pairInfo.get(crews[0]);
-
-          if (pairs.includes(crews[1])) return true;
-        }
-      }
-
-      // 1:1:1 페어
-      else {
-        if (pairInfo.has(crews[0])) {
-          const pairs = pairInfo.get(crews[0]);
-
-          if (pairs.includes(crews[1]) || pairs.includes(crews[2])) return true;
-        }
+    for (let res of matchResultArr) {
+      if (res.length === 2) {
+        matchResult.set(res[0], [res[1]]);
+        matchResult.set(res[1], [res[0]]);
+      } else {
+        matchResult.set(res[0], [res[1], res[2]]);
+        matchResult.set(res[1], [res[0], res[2]]);
+        matchResult.set(res[2], [res[0], res[1]]);
       }
     }
 
-    return false;
-  }
-
-  initializeMap() {
-    this.#matchHistory = this.#setMap();
+    return matchResult;
   }
 
   #setMap() {

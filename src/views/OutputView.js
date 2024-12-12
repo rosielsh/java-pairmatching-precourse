@@ -11,7 +11,6 @@ class OutputView {
     Console.print("\n#############################################");
     Console.print(`과정: 백엔드 | 프론트엔드`);
     Console.print("미션:");
-    // 레벨 별 미션 출력
     for (let [level, missions] of Object.entries(MISSION)) {
       Console.print(`    - ${level}: ${missions.join(" | ")}`);
     }
