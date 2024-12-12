@@ -1,8 +1,6 @@
-import { Random } from "@woowacourse/mission-utils";
-
 class MatchStrategy {
   static shuffle(crews) {
-    return Random.shuffle(crews);
+    return crews.sort(() => Math.random() - 0.5);
   }
 }
 
