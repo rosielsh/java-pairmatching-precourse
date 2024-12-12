@@ -49,6 +49,34 @@ class MatchHistory {
     return matchResult;
   }
 
+  isPairInSameLevel(matchInfo, crews) {
+    const resultFindByKey = this.#getByKey(matchInfo[0], matchInfo[1]);
+
+    for (let [_, pairInfo] of resultFindByKey) {
+      if (pairInfo === null) continue;
+
+      // 1:1 페어
+      if (crews.length === 2) {
+        if (pairInfo.has(crews[0])) {
+          const pairs = pairInfo.get(crews[0]);
+
+          if (pairs.includes(crews[1])) return true;
+        }
+      }
+
+      // 1:1:1 페어
+      else {
+        if (pairInfo.has(crews[0])) {
+          const pairs = pairInfo.get(crews[0]);
+
+          if (pairs.includes(crews[1]) || pairs.includes(crews[2])) return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   #setMap() {
     const map = new Map();
 
